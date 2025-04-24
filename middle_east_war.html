@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deaths in Wars by Country and Religion</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-4xl">
+        <h1 class="text-2xl font-bold text-center mb-4">Deaths in Wars and Proxy Wars by Country and Religion</h1>
+        <canvas id="deathChart"></canvas>
+    </div>
+
+    <script>
+        // Data and sources
+        const data = {
+            labels: ['Saudi Arabia', 'Iran', 'Israel'],
+            datasets: [
+                {
+                    label: 'Sunni',
+                    data: [245050, 161500, 175720],
+                    backgroundColor: 'rgba(54, 162, 235, 0.8)', // Blue
+                    sources: [
+                        'https://caat.org.uk/homepage/stop-arming-saudi-arabia/the-war-on-yemens-civilians/',
+                        'https://kurzman.unc.edu/death-tolls-of-the-iran-iraq-war/',
+                        'https://www.aljazeera.com/news/longform/2023/10/9/israel-hamas-war-in-maps-and-charts-live-tracker'
+                    ]
+                },
+                {
+                    label: 'Shia',
+                    data: [131950, 163000, 300],
+                    backgroundColor: 'rgba(255, 99, 132, 0.8)', // Red
+                    sources: [
+                        'https://caat.org.uk/homepage/stop-arming-saudi-arabia/the-war-on-yemens-civilians/',
+                        'https://kurzman.unc.edu/death-tolls-of-the-iran-iraq-war/',
+                        'https://www.hrw.org/report/2007/09/05/why-they-died/civilian-casualties-lebanon-during-2006-war'
+                    ]
+                },
+                {
+                    label: 'Christian',
+                    data: [0, 22500, 350],
+                    backgroundColor: 'rgba(75, 192, 192, 0.8)', // Green
+                    sources: [
+                        '', // No Christian deaths for Saudi Arabia
+                        'https://en.wikipedia.org/wiki/Casualties_of_the_Syrian_civil_war',
+                        'https://www.hrw.org/report/2007/09/05/why-they-died/civilian-casualties-lebanon-during-2006-war'
+                    ]
+                },
+                {
+                    label: 'Other',
+                    data: [0, 3000, 3630],
+                    backgroundColor: 'rgba(153, 162, 165, 0.8)', // Gray
+                    sources: [
+                        '', // No Other deaths for Saudi Arabia
+                        'https://en.wikipedia.org/wiki/Casualties_of_the_Syrian_civil_war',
+                        'https://www.hrw.org/report/2007/09/05/why-they-died/civilian-casualties-lebanon-during-2006-war'
+                    ]
+                }
+            ]
+        };
+
+        // Chart configuration
+        const ctx = document.getElementById('deathChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Click a segment to visit the source'
+                    }
+                },
+                responsive: true,
+                scales: {
+                    x: {
+                        stacked: true,
+                        title: {
+                            display: true,
+                            text: 'Country'
+                        }
+                    },
+                    y: {
+                        stacked: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Deaths'
+                        },
+                        beginAtZero: true
+                    }
+                },
+                onClick: (event, elements) => {
+                    if (elements.length > 0) {
+                        const element = elements[0];
+                        const datasetIndex = element.datasetIndex;
+                        const index = element.index;
+                        const url = data.datasets[datasetIndex].sources[index];
+                        if (url) {
+                            window.open(url, '_blank');
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

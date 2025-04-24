@@ -3,9 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Data Visualization Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>hi</h1>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Header -->
+    <header class="bg-blue-600 text-white p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Data Visualization Hub</h1>
+            <div class="relative w-64">
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search visualizations..."
+                    onchange=""
+                    class="w-full p-2 pl-10 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <img
+                    src="https://scontent.fdac45-1.fna.fbcdn.net/v/t39.30808-6/492923116_122108325038839835_308667298135416558_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=kHGgZ16txeoQ7kNvwFGuNBF&_nc_oc=AdnhPUdUzyXTQ2Rh6_X5KnkxdZkZDR1z36sDyvBsOtzm06iLiZAam6L8EAn-HiiVUyk&_nc_zt=23&_nc_ht=scontent.fdac45-1.fna&_nc_gid=UwkOfwsFGDDGF_BpZMT-iw&oh=00_AfEmUC8dPG1Fdjd0cGcxXE6eS0Wiul4xwKHbMb8SabuQaA&oe=680FD485"
+                    alt="Search Icon"
+                    class="absolute left-2 top-2.5 h-5 w-5"
+                />
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-6">
+        <div id="vizGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Visualization cards will be populated here -->
+        </div>
+    </main>
+
+    <script>
+        // Visualization metadata
+        const visualizations = [
+            {
+                title: 'Deaths in Wars by Country and Religion',
+                description: 'Stacked bar chart showing deaths caused by Saudi Arabia, Iran, and Israel, segmented by religion (Sunni, Shia, Christian, Other). Click segments to visit sources.',
+                tags: ['war', 'casualties', 'religion', 'Saudi Arabia', 'Iran', 'Israel'],
+                url: 'index.html'
+            },
+            {
+                title: 'Future Visualization 1',
+                description: 'Placeholder for a future data visualization. Add details and a URL when ready.',
+                tags: ['placeholder', 'future'],
+                url: '#'
+            },
+            {
+                title: 'Future Visualization 2',
+                description: 'Placeholder for another future visualization. Update with real data and a URL.',
+                tags: ['placeholder', 'future'],
+                url: '#'
+            }
+        ];
+
+        // Render visualization cards
+        const vizGrid = document.getElementById('vizGrid');
+        function renderCards(vizs) {
+            vizGrid.innerHTML = '';
+            vizs.forEach(viz => {
+                const card = document.createElement('div');
+                card.className = 'bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow';
+                card.innerHTML = `
+                    <h2 class="text-xl font-semibold mb-2">${viz.title}</h2>
+                    <p class="text-gray-600 mb-4">${viz.description}</p>
+                    <p class="text-sm text-gray-500 mb-2">Tags: ${viz.tags.join(', ')}</p>
+                    <a href="${viz.url}" class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">View Visualization</a>
+                `;
+                vizGrid.appendChild(card);
+            });
+        }
+
+        // Initial render
+        renderCards(visualizations);
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase();
+            const filteredVizs = visualizations.filter(viz =>
+                viz.title.toLowerCase().includes(query) ||
+                viz.tags.some(tag => tag.toLowerCase().includes(query))
+            );
+            renderCards(filteredVizs);
+        });
+    </script>
 </body>
 </html>

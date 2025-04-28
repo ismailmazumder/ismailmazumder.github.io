@@ -30,25 +30,26 @@
             .then(response => response.json())
             .then(json => {
                 const yearSelect = document.getElementById('yearSelect');
-                const data = {
-                    labels: json.labels,
-                    datasets: json.datasets
-                };
 
-                // Populate year dropdown
-                json.years.forEach(year => {
-                    const option = document.createElement('option');
-                    option.value = year;
-                    option.textContent = year;
-                    yearSelect.appendChild(option);
+                // Process religious breakdown to create datasets
+                const religions = {};
+                json.datasets[0].religious_breakdown.forEach((breakdown, countryIndex) => {
+                    Object.entries(breakdown).forEach(([religion, details]) => {
+                        if (!religions[religion]) {
+                            religions[religion] = {
+                                label: religion,
+                                data: Array(json.labels.length).fill(0),
+                                backgroundColor: details.color,
+                                hoverBackgroundColor: details.color
+                            };
+                        }
+                        religions[religion].data[countryIndex] = (json.datasets[0].data[countryIndex] * details.percentage) / 100;
+                    });
                 });
 
-                // Responsive font size based on screen width
-                const getFontSize = () => {
-                    const width = window.innerWidth;
-                    if (width < 640) return 12; // Mobile
-                    if (width < 1024) return 14; // Tablet
-                    return 16; // Desktop
+                const data = {
+                    labels: json.labels,
+                    datasets: Object.values(religions)
                 };
 
                 // Chart configuration
@@ -61,13 +62,13 @@
                             title: {
                                 display: true,
                                 text: 'Click a segment to visit the source',
-                                font: { size: getFontSize() + 4 },
+                                font: { size: 16 },
                                 padding: { top: 10, bottom: 20 }
                             },
                             legend: {
-                                position: window.innerWidth < 640 ? 'bottom' : 'top',
+                                position: 'top',
                                 labels: {
-                                    font: { size: getFontSize() },
+                                    font: { size: 14 },
                                     boxWidth: 24,
                                     padding: 15
                                 }
@@ -81,11 +82,11 @@
                                 title: {
                                     display: true,
                                     text: 'Country',
-                                    font: { size: getFontSize() + 4 },
+                                    font: { size: 16 },
                                     padding: { top: 10 }
                                 },
                                 ticks: {
-                                    font: { size: getFontSize() },
+                                    font: { size: 14 },
                                     maxRotation: 45,
                                     minRotation: 0
                                 },
@@ -97,11 +98,11 @@
                                 title: {
                                     display: true,
                                     text: 'Number of Deaths',
-                                    font: { size: getFontSize() + 4 },
+                                    font: { size: 16 },
                                     padding: { bottom: 10 }
                                 },
                                 ticks: {
-                                    font: { size: getFontSize() },
+                                    font: { size: 14 },
                                     callback: value => (value / 1000) + 'K',
                                     stepSize: 50000
                                 },
@@ -119,7 +120,7 @@
                                 const element = elements[0];
                                 const datasetIndex = element.datasetIndex;
                                 const index = element.index;
-                                const url = data.datasets[datasetIndex].sources[index];
+                                const url = json.datasets[0].sources[index];
                                 if (url) {
                                     window.open(url, '_blank');
                                 }
@@ -129,31 +130,6 @@
                             event.native.target.style.cursor = elements.length ? 'pointer' : 'default';
                         }
                     }
-                });
-
-                // Handle year selection
-                yearSelect.addEventListener('change', () => {
-                    const selectedYear = yearSelect.value;
-                    if (selectedYear === 'all') {
-                        chart.data.labels = json.labels;
-                        chart.data.datasets = json.datasets;
-                    } else {
-                        // Filter data based on the selected year (logic to be implemented if year data is added)
-                        console.warn('Year-based filtering is not implemented yet.');
-                    }
-                    chart.update();
-                });
-
-                // Update font sizes and legend position on window resize
-                window.addEventListener('resize', () => {
-                    chart.options.plugins.title.font.size = getFontSize() + 4;
-                    chart.options.plugins.legend.labels.font.size = getFontSize();
-                    chart.options.plugins.legend.position = window.innerWidth < 640 ? 'bottom' : 'top';
-                    chart.options.scales.x.title.font.size = getFontSize() + 4;
-                    chart.options.scales.x.ticks.font.size = getFontSize();
-                    chart.options.scales.y.title.font.size = getFontSize() + 4;
-                    chart.options.scales.y.ticks.font.size = getFontSize();
-                    chart.update();
                 });
             })
             .catch(error => console.error('Error loading JSON:', error));

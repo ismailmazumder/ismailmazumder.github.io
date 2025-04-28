@@ -1,31 +1,42 @@
 {
-    "labels": ["Saudi Arabia", "Iran", "Israel"],
-    "datasets": [
-      {
-        "label": "Total estimated war-related deaths",
-        "data": [1033493, 1533493, 134000],
-        "backgroundColor": [
-          "rgba(54, 162, 235, 0.8)",
-          "rgba(255, 99, 132, 0.8)",
-          "rgba(75, 192, 192, 0.8)"
-        ],
-        "hoverBackgroundColor": [
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 99, 132, 1)",
-          "rgba(75, 192, 192, 1)"
-        ],
-        "sources": [
-          "https://reliefweb.int/report/yemen/assessing-impact-war-yemen-pathways-recovery",
-          "https://news.un.org/feed/view/en/story/2020/12/1078972",
-          "https://en.wikipedia.org/wiki/Syrian_civil_war",
-          "https://www.ohchr.org/en/press-releases/2022/06/un-human-rights-office-estimates-more-306000-civilians-were-killed-over-10",
-          "https://en.wikipedia.org/wiki/Iran%E2%80%93Iraq_War",
-          "https://www.britannica.com/event/Iran-Iraq-War",
-          "https://en.wikipedia.org/wiki/Palestinian_casualties_of_war",
-          "https://www.aa.com.tr/en/middle-east/palestinian-nakba-76-years-on-facts-and-figures/3219205"
-        ]
-      }
-    ],
-    "years": []
-  }
-  
+  "labels": ["Saudi Arabia", "Iran", "Israel"],
+  "datasets": [
+    {
+      "label": "Total estimated war-related deaths",
+      "data": [377000, 250000, 134000],
+      "religious_breakdown": [
+        {
+          "Zaydi Shia": {"percentage": 60, "color": "rgba(255, 99, 132, 0.8)"},
+          "Sunni": {"percentage": 40, "color": "rgba(54, 162, 235, 0.8)"},
+          "Other": {"percentage": 0, "color": "rgba(75, 192, 192, 0.8)"}
+        },
+        {
+          "Shia": {"percentage": 70, "color": "rgba(255, 159, 64, 0.8)"},
+          "Sunni": {"percentage": 30, "color": "rgba(153, 102, 255, 0.8)"},
+          "Other": {"percentage": 0, "color": "rgba(255, 206, 86, 0.8)"}
+        },
+        {
+          "Sunni": {"percentage": 93, "color": "rgba(75, 192, 192, 0.8)"},
+          "Christian": {"percentage": 6, "color": "rgba(255, 99, 132, 0.8)"},
+          "Other": {"percentage": 1, "color": "rgba(54, 162, 235, 0.8)"}
+        }
+      ],
+      "backgroundColor": [
+        "rgba(54, 162, 235, 0.8)",
+        "rgba(255, 99, 132, 0.8)",
+        "rgba(75, 192, 192, 0.8)"
+      ],
+      "hoverBackgroundColor": [
+        "rgba(54, 162, 235, 1)",
+        "rgba(255, 99, 132, 1)",
+        "rgba(75, 192, 192, 1)"
+      ],
+      "sources": [
+        "https://www.aljazeera.com/news/2021/11/23/un-yemen-recovery-possible-in-one-generation-if-war-stops-now",
+        "https://kurzman.unc.edu/death-tolls-of-the-iran-iraq-war/",
+        "https://www.aa.com.tr/en/middle-east/palestinian-nakba-76-years-on-facts-and-figures/3219205"
+      ]
+    }
+  ],
+  "years": []
+}

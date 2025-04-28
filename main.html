@@ -1,88 +1,319 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Visualization Hub</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 min-h-screen">
-    <!-- Header -->
-    <header class="bg-blue-600 text-white p-4 shadow-md">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold">Data Visualization Hub</h1>
-            <div class="relative w-64">
-                <input
-                    type="text"
-                    id="searchInput"
-                    placeholder="Search visualizations..."
-                    onchange=""
-                    class="w-full p-2 pl-10 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <img
-                    src="https://scontent.fdac45-1.fna.fbcdn.net/v/t39.30808-6/492923116_122108325038839835_308667298135416558_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=kHGgZ16txeoQ7kNvwFGuNBF&_nc_oc=AdnhPUdUzyXTQ2Rh6_X5KnkxdZkZDR1z36sDyvBsOtzm06iLiZAam6L8EAn-HiiVUyk&_nc_zt=23&_nc_ht=scontent.fdac45-1.fna&_nc_gid=UwkOfwsFGDDGF_BpZMT-iw&oh=00_AfEmUC8dPG1Fdjd0cGcxXE6eS0Wiul4xwKHbMb8SabuQaA&oe=680FD485"
-                    alt="Search Icon"
-                    class="absolute left-2 top-2.5 h-5 w-5"
-                />
-            </div>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="container mx-auto p-6">
-        <div id="vizGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Visualization cards will be populated here -->
-        </div>
-    </main>
-
-    <script>
-        // Visualization metadata
-        // add here
-        const visualizations = [
-            {
-                title: 'Deaths in Wars by Country and Religion',
-                description: 'Stacked bar chart showing deaths caused by Saudi Arabia, Iran, and Israel, segmented by religion (Sunni, Shia, Christian, Other). Click segments to visit sources.',
-                tags: ['war', 'casualties', 'religion', 'Saudi Arabia', 'Iran', 'Israel'],
-                url: 'middle_east_war.html'
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Visualization Hub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" href="" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              200: '#bae6fd',
+              300: '#7dd3fc',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
             },
-            {
-                title: 'Major Wars (1914–Present)',
-                description: 'Causes of wars throughout history ',
-                tags: ['war', 'causes'],
-                url: 'war_and_deaths.html'
+            secondary: {
+              50: '#f8fafc',
+              100: '#f1f5f9',
+              200: '#e2e8f0',
+              300: '#cbd5e1',
+              400: '#94a3b8',
+              500: '#64748b',
+              600: '#475569',
+              700: '#334155',
+              800: '#1e293b',
+              900: '#0f172a',
             }
-        ];
-
-        // Render visualization cards
-        const vizGrid = document.getElementById('vizGrid');
-        function renderCards(vizs) {
-            vizGrid.innerHTML = '';
-            vizs.forEach(viz => {
-                const card = document.createElement('div');
-                card.className = 'bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow';
-                card.innerHTML = `
-                    <h2 class="text-xl font-semibold mb-2">${viz.title}</h2>
-                    <p class="text-gray-600 mb-4">${viz.description}</p>
-                    <p class="text-sm text-gray-500 mb-2">Tags: ${viz.tags.join(', ')}</p>
-                    <a href="${viz.url}" class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">View Visualization</a>
-                `;
-                vizGrid.appendChild(card);
-            });
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-20px)' },
+            }
+          }
         }
+      }
+    }
+  </script>
+  <style>
+    .bg-pattern {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cg fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath opacity='.5' d='M96 95h4v1h-4v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4h-9v4h-1v-4H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15v-9H0v-1h15V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h9V0h1v15h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9h4v1h-4v9zm-1 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm9-10v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-10 0v-9h-9v9h9zm-9-10h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9zm10 0h9v-9h-9v9z'/%3E%3Cpath d='M6 5V0H5v5H0v1h5v94h1V6h94V5H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
 
-        // Initial render
-        renderCards(visualizations);
+    .animated-blob {
+      animation: blob-animation 10s infinite alternate;
+    }
 
-        // Search functionality
-        const searchInput = document.getElementById('searchInput');
-        searchInput.addEventListener('input', () => {
-            const query = searchInput.value.toLowerCase();
-            const filteredVizs = visualizations.filter(viz =>
-                viz.title.toLowerCase().includes(query) ||
-                viz.tags.some(tag => tag.toLowerCase().includes(query))
-            );
-            renderCards(filteredVizs);
-        });
-    </script>
+    @keyframes blob-animation {
+      0% {
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+      }
+
+      50% {
+        border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+      }
+
+      100% {
+        border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+      }
+    }
+  </style>
+</head>
+
+<body
+  class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800 bg-pattern transition-colors duration-300">
+  <!-- Animated Background Elements -->
+  <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+    <div
+      class="absolute top-20 left-10 w-64 h-64 bg-primary-300/20 dark:bg-primary-600/10 rounded-full filter blur-3xl animate-float">
+    </div>
+    <div
+      class="absolute bottom-20 right-10 w-80 h-80 bg-indigo-300/20 dark:bg-indigo-600/10 rounded-full filter blur-3xl animate-pulse-slow">
+    </div>
+    <div
+      class="absolute top-1/2 left-1/3 w-72 h-72 bg-purple-300/10 dark:bg-purple-600/10 rounded-full filter blur-3xl animate-pulse">
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md shadow-md">
+    <div class="container mx-auto px-4 py-4">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="flex items-center">
+          <i class="bi bi-bar-chart-fill text-primary-600 dark:text-primary-400 text-3xl mr-3"></i>
+          <h1
+            class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary-600 to-indigo-600 dark:from-primary-400 dark:to-indigo-400 bg-clip-text text-transparent">
+            Data Visualization Hub</h1>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <div class="relative">
+            <input type="text" id="searchInput" placeholder="Search visualizations..."
+              class="w-full md:w-64 p-2 pl-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white/90 dark:bg-gray-700/90 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-all" />
+            <i class="bi bi-search absolute left-3 top-2.5 text-gray-400 dark:text-gray-500"></i>
+          </div>
+
+          <button id="themeToggle"
+            class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+            <i class="bi bi-sun-fill text-yellow-500 dark:hidden"></i>
+            <i class="bi bi-moon-fill text-indigo-300 hidden dark:block"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="py-12 md:py-20">
+    <div class="container mx-auto px-4">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-6">Explore Interactive Data
+          Visualizations</h2>
+        <p class="text-lg text-gray-600 dark:text-gray-300 mb-8">Discover insights through beautiful, interactive data
+          visualizations. Browse our collection or search by topic.</p>
+        <div class="flex flex-wrap justify-center gap-4">
+        </div>
+      </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-8">
+    <div class="mb-8">
+      <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-2">Featured Visualizations</h3>
+      <div class="h-1 w-24 bg-gradient-to-r from-primary-500 to-indigo-500 rounded-full"></div>
+    </div>
+
+    <div id="vizGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Visualization cards will be populated here -->
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md mt-16 border-t border-gray-200 dark:border-gray-700">
+    <div class="container mx-auto px-4 py-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+          <div class="flex items-center mb-4">
+            <i class="bi bi-bar-chart-fill text-primary-600 dark:text-primary-400 text-2xl mr-2"></i>
+            <h3 class="text-xl font-bold text-gray-800 dark:text-white">Data Visualization Hub</h3>
+          </div>
+          <p class="text-gray-600 dark:text-gray-300 mb-4">An open-source platform for exploring and sharing interactive
+            data visualizations.</p>
+        </div>
+
+        <div>
+          <h4 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="#"
+                class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Home</a>
+            </li>
+            <li><a href="#"
+                class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">About</a>
+            </li>
+            <li><a href="https://github.com/ismailmazumder/ismailmazumder.github.io.git"
+                class="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Contribute</a>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">Open Source</h4>
+          <p class="text-gray-600 dark:text-gray-300 mb-4">This project is open source and available on GitHub.
+            Contributions are welcome!</p>
+          <a href="#"
+            class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-700 hover:bg-gray-700 dark:hover:bg-gray-600 text-white rounded-lg transition-colors">
+            <i class="bi bi-github mr-2"></i>Star on GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 text-center">
+        <p class="text-gray-600 dark:text-gray-400">© 2025 Data Visualization Hub. All rights reserved.</p>
+        <p class="text-gray-500 dark:text-gray-500 text-sm mt-2">Designed by <a href="https://github.com/xspoilt-dev"
+            class="text-primary-600 dark:text-primary-400 hover:underline">Minhajul Islam</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Visualization metadata
+    const visualizations = [
+      {
+        title: 'Deaths in Wars by Country and Religion',
+        description: 'Stacked bar chart showing deaths caused by Saudi Arabia, Iran, and Israel, segmented by religion (Sunni, Shia, Christian, Other). Click segments to visit sources.',
+        tags: ['war', 'casualties', 'religion', 'Saudi Arabia', 'Iran', 'Israel'],
+        url: 'middle_east_war.html',
+        image: 'https://i.insider.com/5cacc64e2730ca67360d1c3d?width=700'
+      },
+      {
+        title: 'Major Wars (1914–Present)',
+        description: 'Explore the causes, key events, and outcomes of major wars from World War I to modern conflicts.',
+        tags: ['war', 'conflicts', 'deatg', 'global'],
+        url: '#',
+        image: 'https://imgs.search.brave.com/8w0Oud1SfE5B_qxAzjKURUcNweMokS1Aex-d88IGax8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzA1LzYyLzA5LzU5/LzM2MF9GXzU2MjA5/NTkwNF96eEhqZEZO/bnZwam84YTRkV2tk/RHVaMHZVa04wV05F/NC5qcGc'
+      }
+    ];
+
+    // Render visualization cards
+    const vizGrid = document.getElementById('vizGrid');
+    function renderCards(vizs) {
+      vizGrid.innerHTML = '';
+
+      if (vizs.length === 0) {
+        vizGrid.innerHTML = `
+          <div class="col-span-1 sm:col-span-2 lg:col-span-3 text-center py-16">
+            <i class="bi bi-search text-5xl text-gray-400 dark:text-gray-600 mb-4"></i>
+            <h3 class="text-xl font-semibold text-gray-700 dark:text-gray-300">No visualizations found</h3>
+            <p class="text-gray-500 dark:text-gray-400 mt-2">Try adjusting your search terms</p>
+          </div>
+        `;
+        return;
+      }
+
+      vizs.forEach(viz => {
+        const card = document.createElement('div');
+        card.className = 'bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1';
+
+        // Use the provided image or a placeholder
+        const imageUrl = viz.image || `https://placehold.co/600x400/3b82f6/ffffff?text=${encodeURIComponent(viz.title)}`;
+
+        card.innerHTML = `
+        <div class="flex flex-col h-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow">
+
+          <div class="relative h-48 overflow-hidden">
+            <img 
+              src="${imageUrl}" 
+              alt="${viz.title}" 
+              class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+              onerror="this.onerror=null; this.src='https://placehold.co/600x400/3b82f6/ffffff?text=${encodeURIComponent(viz.title)}';"
+              crossorigin="anonymous"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+          </div>
+
+          <div class="flex flex-col flex-grow p-5">
+            <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">${viz.title}</h2>
+            <p class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3 flex-grow">${viz.description}</p>
+            
+            <div class="flex flex-wrap gap-2 mb-4">
+              ${viz.tags.map(tag => `
+                <span class="px-2 py-1 text-xs rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300">
+                  ${tag}
+                </span>
+              `).join('')}
+            </div>
+
+            <div class="mt-auto">
+              <a href="${viz.url}" class="inline-flex items-center w-full justify-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors">
+                <i class="bi bi-bar-chart-line mr-2"></i>View Visualization
+              </a>
+            </div>
+          </div>
+
+        </div>
+      `;
+        vizGrid.appendChild(card);
+      });
+    }
+
+    // Initial render
+    renderCards(visualizations);
+
+    // Search functionality
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase();
+      const filteredVizs = visualizations.filter(viz =>
+        viz.title.toLowerCase().includes(query) ||
+        viz.description.toLowerCase().includes(query) ||
+        viz.tags.some(tag => tag.toLowerCase().includes(query))
+      );
+      renderCards(filteredVizs);
+    });
+
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('themeToggle');
+
+    // Check for saved theme preference or use preferred color scheme
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    // Set initial theme
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+
+    // Toggle theme
+    themeToggle.addEventListener('click', () => {
+      if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    });
+  </script>
 </body>
+
 </html>

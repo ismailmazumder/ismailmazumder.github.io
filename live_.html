@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deaths in Wars by Country and Religion</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-200 flex items-center justify-center min-h-screen p-4 sm:p-8">
+    <div class="bg-white p-6 sm:p-8 rounded-xl shadow-xl w-full max-w-5xl">
+        <h1 class="text-2xl sm:text-3xl font-bold text-center mb-6 text-gray-800">Deaths in Wars and Events by Country and Religion</h1>
+        <div class="relative w-full h-80 sm:h-[500px]">
+            <canvas id="deathChart"></canvas>
+        </div>
+        <div id="error" class="text-red-500 text-center mt-4"></div>
+    </div>
+
+    <script>
+        // Static data (example data; adjust as needed)
+        const data = {
+            labels: ['Saudi Arabia', 'Iran', 'Israel'],
+            datasets: [
+                {
+                    label: 'Sunni',
+                    data: [245050, 161500, 175720],
+                    backgroundColor: 'rgba(54, 162, 235, 0.8)', // Blue
+                    hoverBackgroundColor: 'rgba(54, 162, 235, 1)',
+                    sources: [
+                        'https://caat.org.uk/homepage/stop-arming-saudi-arabia/the-war-on-yemens-civilians/',
+                        'https://kurzman.unc.edu/death-tolls-of-the-iran-iraq-war/',
+                        'https://www.aljazeera.com/news/longform/2023/10/9/israel-hamas-war-in-maps-and-charts-live-tracker'
+                    ]
+                },
+                {
+                    label: 'Shia',
+                    data: [131950, 163000, 300],
+                    backgroundColor: 'rgba(255, 99, 132, 0.8)', // Red
+                    hoverBackgroundColor: 'rgba(255, 99, 132, 1)',
+                    sources: [
+                        'https://caat.org.uk/homepage/stop-arming-saudi-arabia/the-war-on-yemens-civilians/',
+                        'https://kurzman.unc.edu/death-tolls-of-the-iran-iraq-war/',
+                        'https://www.hrw.org/report/2007/09/05/why-they-died/civilian-casualties-lebanon-during-2006-war'
+                    ]
+                }
+            ]
+        };
+
+        // Initialize the chart with static data
+        const ctx = document.getElementById('deathChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: {
+                plugins: {
+                    title: { display: true, text: 'Click a segment to visit the source' },
+                    legend: { position: 'top' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.dataset.label}: ${(context.parsed.y / 1000)}K`;
+                            }
+                        }
+                    }
+                },
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { stacked: true, title: { display: true, text: 'Country' } },
+                    y: {
+                        stacked: true,
+                        title: { display: true, text: 'Number of Deaths' },
+                        ticks: { callback: value => (value / 1000) + 'K' }
+                    }
+                },
+                onClick: (event, elements) => {
+                    if (elements.length > 0) {
+                        const { datasetIndex, index } = elements[0];
+                        const url = data.datasets[datasetIndex].sources[index];
+                        if (url) window.open(url, '_blank');
+                    }
+                }
+            }
+        });
+
+        // Fetch dynamic data asynchronously
+        const errorElement = document.getElementById('error');
+        errorElement.textContent = 'Loading data...'; // Show loading message
+
+        fetch('https://ai-api-al6k.onrender.com/ask', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: 'how many people bangladeshi student killed in july 2024.' })
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(responseData => {
+            errorElement.textContent = ''; // Clear loading message
+            // Process response data...
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            errorElement.textContent = 'Failed to load additional data. Showing static data only.';
+        });
+    </script>
+</body>
+</html>

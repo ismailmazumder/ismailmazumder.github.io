@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wars, Causes, and Deaths Visualization</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+  <div class="max-w-7xl mx-auto">
+    <h1 class="text-4xl font-bold text-center mb-8">Major Wars (1914–Present)</h1>
+
+    <!-- Toggle Buttons -->
+    <div class="flex justify-center space-x-4 mb-6">
+      <button id="barBtn" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Bar Chart</button>
+      <button id="pieBtn" class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Pie Chart</button>
+    </div>
+
+    <!-- Chart Container -->
+    <div class="bg-white p-6 rounded-lg shadow mb-12">
+      <canvas id="warChart"></canvas>
+    </div>
+
+    <!-- Sources List -->
+    <div class="bg-white p-6 rounded-lg shadow">
+      <h2 class="text-2xl font-semibold mb-4">Sources</h2>
+      <ul class="list-disc pl-6 space-y-2 text-gray-700">
+        <li><a href="https://www.britannica.com/event/World-War-I" class="text-blue-500 hover:underline" target="_blank">World War I - Encyclopedia Britannica (Casualties and Causes)</a></li>
+        <li><a href="https://www.oxfordreference.com/view/10.1093/oi/authority.20110803100451914" class="text-blue-500 hover:underline" target="_blank">Russian Civil War - Oxford Reference (Ideology and Death Toll)</a></li>
+        <li><a href="https://www.britannica.com/event/Spanish-Civil-War" class="text-blue-500 hover:underline" target="_blank">Spanish Civil War - Britannica (Catholic Church Role)</a></li>
+        <li><a href="https://en.wikipedia.org/wiki/World_War_II_casualties" class="text-blue-500 hover:underline" target="_blank">World War II Deaths - Wikipedia (verified with Britannica)</a></li>
+        <li><a href="https://www.icty.org/en/about/what-former-yugoslavia" class="text-blue-500 hover:underline" target="_blank">Bosnian War Deaths - United Nations ICTY</a></li>
+        <li><a href="https://www.rescue.org/report/mortality-congo-ongoing-crisis-and-international-engagement" class="text-blue-500 hover:underline" target="_blank">Congo Wars Death Toll - IRC Mortality Survey</a></li>
+        <li><a href="https://www.syriahr.com/en/" class="text-blue-500 hover:underline" target="_blank">Syrian Civil War Death Toll - SOHR</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    const ctx = document.getElementById('warChart').getContext('2d');
+
+    const labels = [
+      'World War I',
+      'Russian Civil War',
+      'Spanish Civil War',
+      'World War II',
+      'Chinese Civil War',
+      'Korean War',
+      'Vietnam War',
+      'Partition of India',
+      'Bangladesh Liberation',
+      'Iran–Iraq War',
+      'Soviet–Afghan War',
+      'Yugoslav Wars',
+      'Congo Wars',
+      'Syrian Civil War',
+      'Yemen Civil War'
+    ];
+
+    const deaths = [
+      21500000, 9000000, 500000, 75000000, 1500000, 2500000, 2500000,
+      1000000, 2000000, 750000, 1500000, 140000, 5400000, 600000, 250000
+    ];
+
+    const causes = [
+      'Nationalism, Imperialism, and Alliance Systems',
+      'Bolshevik vs Anti-Bolshevik (Communist vs Tsarist forces)',
+      'Political tensions between Republicans and Nationalists with religious elements',
+      'Expansionism, Fascism, Anti-Semitism, Global Conflict',
+      'Communists (Mao Zedong) vs Nationalists (Chiang Kai-shek)',
+      'Communist North vs Capitalist South, backed by USA/China',
+      'Communist North Vietnam vs US-backed South Vietnam',
+      'Religious (Hindus vs Muslims) and Political Partition',
+      'Political separation from Pakistan, ethnic/religious tensions',
+      'Territorial and Religious (Shiite vs Sunni) factors',
+      'Communist vs Mujahideen rebels, Cold War proxy',
+      'Ethnic and Religious nationalism after Yugoslavia split',
+      'Ethnic Conflicts and Resource Wars',
+      'Political Repression and Sectarian Conflict',
+      'Sunni vs Houthi Shia Rebels, Regional Proxy War'
+    ];
+
+    let chart;
+
+    function createChart(type) {
+      if (chart) chart.destroy();
+      chart = new Chart(ctx, {
+        type: type,
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Estimated Deaths',
+            data: deaths,
+            backgroundColor: [
+              'rgba(59, 130, 246, 0.6)',
+              'rgba(16, 185, 129, 0.6)',
+              'rgba(249, 115, 22, 0.6)',
+              'rgba(234, 88, 12, 0.6)',
+              'rgba(168, 85, 247, 0.6)',
+              'rgba(239, 68, 68, 0.6)',
+              'rgba(5, 150, 105, 0.6)',
+              'rgba(147, 51, 234, 0.6)',
+              'rgba(14, 165, 233, 0.6)',
+              'rgba(251, 191, 36, 0.6)',
+              'rgba(52, 211, 153, 0.6)',
+              'rgba(236, 72, 153, 0.6)',
+              'rgba(163, 230, 53, 0.6)',
+              'rgba(59, 130, 246, 0.6)',
+              'rgba(245, 158, 11, 0.6)'
+            ],
+            borderColor: 'rgba(0, 0, 0, 0.1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: type === 'pie' },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const warIndex = context.dataIndex;
+                  const deathCount = context.parsed !== undefined ? context.parsed : context.raw;
+                  const cause = causes[warIndex];
+                  return `${labels[warIndex]}: ${deathCount.toLocaleString()} deaths\nCause: ${cause}`;
+                }
+              }
+            }
+          },
+          scales: type === 'bar' ? {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                callback: function(value) {
+                  return value.toLocaleString();
+                }
+              }
+            }
+          } : {}
+        }
+      });
+    }
+
+    document.getElementById('barBtn').addEventListener('click', () => createChart('bar'));
+    document.getElementById('pieBtn').addEventListener('click', () => createChart('pie'));
+
+    // Default to Bar Chart
+    createChart('bar');
+  </script>
+</body>
+</html>
